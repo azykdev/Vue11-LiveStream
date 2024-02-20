@@ -5,10 +5,10 @@
         style="display: flex; flex-direction: column; justify-content: space-between;">
 
         <!-- Video -->
-        <div id="video" class="bg-grey w-100 d-flex justify-center align-center pa-5">
+        <div id="video" class="bg-grey-darken-4 w-100 d-flex justify-center align-center pa-5">
           <vue-webrtc ref="webrtc" width="100%" roomId="sample-room" @joined-room="onUserJoined" @left-room="onUserLeft"
-            @opened-room="onOpened" @share-started="onShareStarted" @share-stopped="onShareStopped" @enableVideo="stream"
-            @enableAudio="microphone" @error="onError">
+            @opened-room="onOpened" @share-started="onShareStarted" @share-stopped="onShareStopped" :enableVideo="stream"
+            :enableAudio="microphone"  @error="onError">
           </vue-webrtc>
         </div>
 
@@ -22,13 +22,15 @@
 
         <!-- Actions -->
         <div id="actions" class="d-flex justify-center pa-2 align-center">
-          <v-btn class="mx-2" variant="outlined" :icon="stream ? 'mdi-video' : 'mdi-video-off'"
-            @click="videoToggle" title="Video"></v-btn>
+          <v-btn class="mx-2" variant="outlined" :icon="stream ? 'mdi-video' : 'mdi-video-off'" @click="videoToggle"
+            title="Video"></v-btn>
           <v-btn class="mx-2" variant="outlined" :icon="microphone ? 'mdi-microphone' : 'mdi-microphone-off'"
             @click="microphoneToggle" title="Mikrofon"></v-btn>
           <v-btn class="mx-2" variant="outlined" icon="mdi-close" @click="leave()" color="red" title="Chiqish"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-camera-outline" @click="onCapture" title="Rasmga olish"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-monitor-share" @click="onShareScreen" title="Ekran ulashish"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-camera-outline" @click="onCapture"
+            title="Rasmga olish"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-monitor-share" @click="onShareScreen"
+            title="Ekran ulashish"></v-btn>
         </div>
 
       </v-col>
@@ -98,11 +100,9 @@ export default {
 
     videoToggle() {
       this.stream = !this.stream;
-      this.$refs.webrtc.enableVideo(this.stream)
     },
     microphoneToggle() {
       this.microphone = !this.microphone
-      this.$refs.webrtc.enableAudio(this.microphone)
     }
   },
   mounted() {
