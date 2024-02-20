@@ -94,14 +94,14 @@ export default {
     },
     onShareScreen() {
       this.img = this.$refs.webrtc.shareScreen();
-    }
+    },
 
-    // videoToggle() {
-    //   this.stream = !this.stream
-    // },
-    // microphoneToggle() {
-    //   this.microphone = !this.microphone
-    // }
+    videoToggle() {
+      this.stream = !this.stream
+    },
+    microphoneToggle() {
+      this.microphone = !this.microphone
+    }
   },
   mounted() {
     this.join()
