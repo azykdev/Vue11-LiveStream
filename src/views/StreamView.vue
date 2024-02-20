@@ -4,18 +4,31 @@
       <v-col cols="12" md="9" class="bg-grey-darken-3"
         style="display: flex; flex-direction: column; justify-content: space-between;">
 
+        <!-- Video -->
         <div id="video" class="bg-grey w-100 d-flex justify-center align-center pa-5">
-          <!-- <video width="300px" ref="videoElement" autoplay></video> -->
-          <vue-webrtc ref="webrtc" width="100%" roomId="sample-room">
+          <vue-webrtc ref="webrtc" width="100%" roomId="sample-room" @joined-room="onUserJoined" @left-room="onUserLeft"
+            @opened-room="onOpened" @share-started="onShareStarted" @share-stopped="onShareStopped" @enableVideo="stream"
+            @enableAudio="microphone" @error="onError">
           </vue-webrtc>
         </div>
 
+        <!-- Images -->
+        <div v-if="img">
+          <h2>Olingan rasm</h2>
+          <figure class="figure">
+            <img :src="img" class="figure-img img-fluid rounded" alt="Responsive image" />
+          </figure>
+        </div>
+
+        <!-- Actions -->
         <div id="actions" class="d-flex justify-center pa-2 align-center">
           <v-btn class="mx-2" variant="outlined" :icon="stream ? 'mdi-video' : 'mdi-video-off'"
             @click="videoToggle"></v-btn>
           <v-btn class="mx-2" variant="outlined" :icon="microphone ? 'mdi-microphone' : 'mdi-microphone-off'"
             @click="microphoneToggle"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-close" @click="" color="red"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-close" @click="leave()" color="red"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-camera-outline" @click="onCapture"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-monitor-share" @click="onShareScreen"></v-btn>
         </div>
 
       </v-col>
@@ -51,20 +64,47 @@ export default {
     },
     leave() {
       this.$refs.webrtc.leave()
+      this.$router.push('/')
     },
     onUserJoined(user) {
-      this.users.push(user)
+      const newUser = {
+        id: user,
+        name: 'User'
+      }
+      this.users.push(newUser)
+      console.log('onUserJoined', user)
     },
-    videoToggle() {
-      this.stream = !this.stream
+    onUserLeft(user) {
+      console.log('onUserLeft', user)
     },
-    microphoneToggle() {
-      this.microphone = !this.microphone
+    onOpened(event) {
+      console.log('onOpened: ', event)
+    },
+    onShareStarted(event) {
+      console.log('onShareStarted: ', event)
+    },
+    onShareStopped(event) {
+      console.log('onShareStopped: ', event)
+    },
+    onError(error, stream) {
+      console.log('onError Event: ', error, "Stream: ", stream)
+    },
+    onCapture() {
+      this.img = this.$refs.webrtc.capture()
+    },
+    onShareScreen() {
+      this.img = this.$refs.webrtc.shareScreen();
     }
+
+    // videoToggle() {
+    //   this.stream = !this.stream
+    // },
+    // microphoneToggle() {
+    //   this.microphone = !this.microphone
+    // }
   },
   mounted() {
     this.join()
-    this.$refs.webrtc.onUserJoined = this.onUserJoined
   }
 }
 </script>
