@@ -23,12 +23,12 @@
         <!-- Actions -->
         <div id="actions" class="d-flex justify-center pa-2 align-center">
           <v-btn class="mx-2" variant="outlined" :icon="stream ? 'mdi-video' : 'mdi-video-off'"
-            @click="videoToggle"></v-btn>
+            @click="videoToggle" title="Video"></v-btn>
           <v-btn class="mx-2" variant="outlined" :icon="microphone ? 'mdi-microphone' : 'mdi-microphone-off'"
-            @click="microphoneToggle"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-close" @click="leave()" color="red"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-camera-outline" @click="onCapture"></v-btn>
-          <v-btn class="mx-2" variant="outlined" icon="mdi-monitor-share" @click="onShareScreen"></v-btn>
+            @click="microphoneToggle" title="Mikrofon"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-close" @click="leave()" color="red" title="Chiqish"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-camera-outline" @click="onCapture" title="Rasmga olish"></v-btn>
+          <v-btn class="mx-2" variant="outlined" icon="mdi-monitor-share" @click="onShareScreen" title="Ekran ulashish"></v-btn>
         </div>
 
       </v-col>
@@ -97,10 +97,12 @@ export default {
     },
 
     videoToggle() {
-      this.stream = !this.stream
+      this.stream = !this.stream;
+      this.$refs.webrtc.enableVideo(this.stream)
     },
     microphoneToggle() {
       this.microphone = !this.microphone
+      this.$refs.webrtc.enableAudio(this.microphone)
     }
   },
   mounted() {
